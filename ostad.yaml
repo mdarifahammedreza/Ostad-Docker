@@ -1,0 +1,60 @@
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - mongo_network
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ostad
+      MONGO_INITDB_ROOT_PASSWORD: ostad
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    ports:
+      - "8081:8081"
+    networks:
+      - mongo_network
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ostad
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ostad
+      ME_CONFIG_MONGODB_URI: mongodb://ostad:ostad@mongo:27017/
+    depends_on:
+      - mongo
+
+  ostad-server:
+    build:
+      context: .
+      dockerfile: Dockerfile-server
+    container_name: ostad-server
+    ports:
+      - "5050:5050"
+    networks:
+      - mongo_network
+    depends_on:
+      - mongo
+      - mongo-express
+    environment:
+      MONGO_URI: mongodb://ostad:ostad@mongo:27017/ostad
+      MONGO_USERNAME: ostad
+      MONGO_PASSWORD: ostad
+
+  ostad-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile-UI
+    container_name: ostad-ui
+    ports:
+      - "5173:5173"
+    networks:
+      - mongo_network
+    depends_on:
+      - mongo
+      - mongo-express
+      - ostad-server
+networks:
+  mongo_network:
+    driver: bridge

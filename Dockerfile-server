@@ -1,0 +1,16 @@
+# Dockerfile-Server
+FROM node
+
+ENV MONGO_DB_USERNAME=ostad \
+    MONGO_DB_PASSWORD=ostad 
+
+WORKDIR /ostad-server
+
+COPY OstadServer/ .
+
+
+RUN npm install
+
+EXPOSE 5050
+
+CMD ["node", "server.js"]
