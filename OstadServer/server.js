@@ -36,7 +36,10 @@ app.get("/getStudents", async (req, res) => {
   }
 });
 app.get("/", async (req, res) => {
-res.send("Hello from server");
+res.send({
+  'message': 'Hello from Ostad Server',
+  'author': 'Md Arif Ahammed Reza [TA-Ostad]',
+  });
 });
 // POST new student
 app.post("/addStudent", async (req, res) => {
