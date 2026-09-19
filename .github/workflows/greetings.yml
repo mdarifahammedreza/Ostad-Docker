@@ -53,6 +53,9 @@ jobs:
           echo "No tests yet" # Replace with: npm test
 
       # Docker Build
+      - name: Set up Docker
+        uses: docker/setup-docker-action@v4
+
       - name: Build Docker images
         run: |
           docker build -f Dockerfile-server -t ostad-server .
