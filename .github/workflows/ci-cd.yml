@@ -28,7 +28,7 @@ defaults:
 jobs:
   build-and-test:
     name: Build & Test
-    runs-on: sabet-bhai-runner
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -64,7 +64,7 @@ jobs:
     name: Deploy via PM2
     needs: build-and-test
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-    runs-on: sabet-bhai-runner
+    runs-on: ubuntu-latest
     environment: production
 
     steps:
