@@ -71,3 +71,60 @@ For questions or support, please contact \[Your Name] or open an issue in this r
 ---
 
 Happy coding! 🚀
+
+# Kubernetes Deployment Manifests for Ostad Application
+
+This repository contains Kubernetes manifests to deploy a full-stack application consisting of:
+
+- **MongoDB** (database)
+- **Mongo Express** (admin UI for MongoDB)
+- **Ostad Server** (backend API)
+- **Ostad UI** (frontend web interface)
+
+---
+
+## Directory Structure
+## Project Structure
+
+```bash
+.
+├── 00-namespace.yaml        # Creates namespace: `ornob`
+├── 01-config-secret.yaml    # ConfigMap and Secret for app configuration
+├── 02-pvc.yaml              # PersistentVolumeClaim for MongoDB
+├── 03-deployments.yaml      # All 4 Deployments:
+│                            #   - mongo
+│                            #   - mongo-express
+│                            #   - ostad-server
+│                            #   - ostad-ui
+├── 04-services.yaml         # All 4 Services (ClusterIP):
+│                            #   - mongo
+│                            #   - mongo-express
+│                            #   - ostad-server
+│                            #   - ostad-ui
+└── 05-ingress.yaml          # Ingress rules:
+                             #   - chat.local  → ostad-ui
+                             #   - mongo.local → mongo-express
+
+
+---
+
+## Application Components
+
+| Component       | Purpose                          | Service Type | Access URL         |
+|-----------------|----------------------------------|--------------|--------------------|
+| `mongo`         | MongoDB database                 | ClusterIP    | Internal           |
+| `mongo-express` | Web-based MongoDB admin tool     | ClusterIP    | `mongo.local`      |
+| `ostad-server`  | Backend API (Node.js/Express?)   | ClusterIP    | `chat.local/api`   |
+| `ostad-ui`      | Frontend UI (React/Vue?)         | ClusterIP    | `chat.local`       |
+
+---
+
+## Prerequisites
+
+- Kubernetes cluster (minikube, kind, or cloud-based)
+- `kubectl` configured with cluster access
+- Ingress controller enabled (e.g., NGINX Ingress)
+- Local DNS or `/etc/hosts` entries:
+  ```bash
+  127.0.0.1 chat.local
+  127.0.0.1 mongo.local

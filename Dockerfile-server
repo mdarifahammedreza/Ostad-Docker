@@ -1,16 +1,23 @@
-# Dockerfile-Server
-FROM node
+# Dockerfile-server
 
-ENV MONGO_DB_USERNAME=ostad \
-    MONGO_DB_PASSWORD=ostad 
+# Use a specific Node.js version
+FROM node:18-alpine
 
+# Set working directory
 WORKDIR /ostad-server
 
+# Copy package.json and package-lock.json for caching
+COPY OstadServer/package*.json ./
+
+# Install dependencies, including nodemon for development
+RUN npm install && npm install --save-dev nodemon
+
+# Copy the rest of the application
 COPY OstadServer/ .
 
-
-RUN npm install
-
+# Expose the port
 EXPOSE 5050
 
-CMD ["node", "server.js"]
+# Use nodemon for live reloading in development
+CMD ["npx", "nodemon", "server.js"]
+
