@@ -4,7 +4,7 @@ import toast, { Toaster } from "react-hot-toast";
 const App = () => {
   const [students, setStudents] = useState([
     {
-      name: "John Doe",
+      name: "We have a Plan",
       email: "john.doe@example.com",
       dob: "2000-01-15",
       gender: "Male",
